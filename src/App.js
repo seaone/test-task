@@ -1,5 +1,5 @@
 import './App.css';
-import Toc from "./components/Toc";
+import {TableOfContent} from "./components/TableOfContent";
 
 function App() {
 
@@ -8,7 +8,7 @@ function App() {
       <header className="App-header"></header>
 
       <aside className="App-aside">
-        <Toc />
+        <TableOfContent />
       </aside>
 
       <main className="App-main">

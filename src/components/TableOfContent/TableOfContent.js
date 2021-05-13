@@ -1,9 +1,9 @@
 import {useEffect, useState} from "react";
-import TocSkeletonPreloader from "./TocSkeletonPreloader";
-import TocList from "./TocList";
+import {TableOfContentSkeletonPreloader} from "./TableOfContentSkeletonPreloader";
+import {TableOfContentList} from "./TableOfContentList";
 import styles from "./styles.module.css";
 
-const Toc = () => {
+export const TableOfContent = () => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -22,6 +22,7 @@ const Toc = () => {
 
   const {topLevelIds, entities} = data ?? {};
   const {pages} = entities ?? {};
+  const {anchors} = entities ?? {};
 
   const [activeTocItemId, setActiveTocItemId] = useState(null);
 
@@ -32,16 +33,16 @@ const Toc = () => {
   return (
     <nav className={styles.toc}>
       {data != null ?
-        <TocList
+        <TableOfContentList
           ids={topLevelIds}
           allPages={pages}
+          allAnchors={anchors}
           activeTocItemId={activeTocItemId}
           selectItem={selectItem}
         /> :
-        <TocSkeletonPreloader/>
+        <TableOfContentSkeletonPreloader/>
       }
     </nav>
   );
 }
 
-export default Toc;

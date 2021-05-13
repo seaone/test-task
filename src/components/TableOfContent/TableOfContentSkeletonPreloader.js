@@ -1,6 +1,6 @@
 import styles from "./styles.module.css";
 
-const TocSkeletonPreloader = () => (
+export const TableOfContentSkeletonPreloader = () => (
   <div className={styles.tocSkeletonPreloader}>
     <svg
       role="img"
@@ -15,5 +15,3 @@ const TocSkeletonPreloader = () => (
     </svg>
   </div>
 )
-
-export default TocSkeletonPreloader

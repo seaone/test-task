@@ -1,9 +1,9 @@
 import {createRef, useState} from "react";
 import {CSSTransition} from "react-transition-group";
-import TocItem from "./TocItem";
+import {TableOfContentItem} from "./TableOfContentItem";
 import styles from "./styles.module.css";
 
-const TocList = ({isVisible = true, ids = [], allPages = {}, activeTocItemId = null, selectItem = () => {}}) => {
+export const TableOfContentList = ({isVisible = true, ids = [], allPages = {}, allAnchors = {}, activeTocItemId = null, selectItem = () => {}}) => {
   const [tocListHeight, setTocListHeight] = useState(null);
   const tocListElement = createRef();
   const classNames = {
@@ -50,18 +50,20 @@ const TocList = ({isVisible = true, ids = [], allPages = {}, activeTocItemId = n
         ref={tocListElement}
         className={styles.tocList}
       >
-        {ids.map((id) =>
-          <TocItem
-            key={id}
-            page={allPages[id]}
-            allPages={allPages}
-            activeTocItemId={activeTocItemId}
-            selectItem={selectItem}
-          />
+        {ids.map((id) => {
+          // console.log(allAnchors[id]);
+          return (<TableOfContentItem
+              key={id}
+              page={allPages[id]}
+              anchor={allAnchors[id]}
+              allPages={allPages}
+              allAnchors={allAnchors}
+              activeTocItemId={activeTocItemId}
+              selectItem={selectItem}
+            />)
+          }
         )}
       </ul>
     </CSSTransition>
   )
 }
-
-export default TocList;

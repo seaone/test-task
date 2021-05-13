@@ -27,8 +27,6 @@
   list-style: none;
   padding-left: 0;
   margin: 0;
-  height: 0;
-  transition: height .3s;
 }
 
 .tocListEnterActive {
@@ -66,6 +64,18 @@
 
 .tocItem {}
 
+.tocItemPage.tocItemActive > .tocLink {
+  background-color: rgba(40,40,40,0.05);
+}
+
+.tocItemActive > .tocList > .tocItemAnchor > .tocLink {
+  background-color: rgba(40,40,40,0.05);
+}
+
+.tocItemPage {}
+
+.tocItemAnchor {}
+
 .tocLink {
   display: flex;
   align-items: center;
@@ -76,12 +86,18 @@
   transition-duration: .1s;
 }
 
+.tocAnchorList {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
 .tocLink:hover {
-  background-color: #f4f4f4;
+  background-color: rgba(40,40,40,0.05);
 }
 
 .tocLink:focus-visible {
-  background-color: #f4f4f4;
+  background-color: rgba(40,40,40,0.05);
 }
 
 .tocLinkSelected {
