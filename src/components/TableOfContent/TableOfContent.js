@@ -1,45 +1,27 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
+import {TableOfContentContext} from "./TableOfContentContext"
 import {TableOfContentSkeletonPreloader} from "./TableOfContentSkeletonPreloader";
 import {TableOfContentList} from "./TableOfContentList";
 import styles from "./styles.module.css";
 
-export const TableOfContent = () => {
-  const [data, setData] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await fetch(
-        '/data/HelpTOC.json',
-      );
-
-      const data = await result.json()
-
-      setData(data);
-    }
-
-    fetchData();
-  }, []);
-
-  const {topLevelIds, entities} = data ?? {};
-  const {pages} = entities ?? {};
-  const {anchors} = entities ?? {};
-
+export const TableOfContent = ({tocData = null}) => {
+  const {topLevelIds} = tocData ?? {};
   const [activeTocItemId, setActiveTocItemId] = useState(null);
 
-  const selectItem = (id) => {
+  const onSelectItem = (id) => {
     setActiveTocItemId(() => id);
   }
 
   return (
     <nav className={styles.toc}>
-      {data != null ?
-        <TableOfContentList
-          ids={topLevelIds}
-          allPages={pages}
-          allAnchors={anchors}
-          activeTocItemId={activeTocItemId}
-          selectItem={selectItem}
-        /> :
+      {tocData != null ?
+        <TableOfContentContext.Provider value={tocData}>
+          <TableOfContentList
+            ids={topLevelIds}
+            activeTocItemId={activeTocItemId}
+            onSelectItem={onSelectItem}
+          />
+        </TableOfContentContext.Provider> :
         <TableOfContentSkeletonPreloader/>
       }
     </nav>

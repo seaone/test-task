@@ -1,9 +1,15 @@
-import {createRef, useState} from "react";
+import {createRef, useState, useContext} from "react";
 import {CSSTransition} from "react-transition-group";
+import {TableOfContentContext} from "./TableOfContentContext"
 import {TableOfContentItem} from "./TableOfContentItem";
 import styles from "./styles.module.css";
 
-export const TableOfContentList = ({isVisible = true, ids = [], allPages = {}, allAnchors = {}, activeTocItemId = null, selectItem = () => {}}) => {
+export const TableOfContentList = ({isVisible = true, ids = [], activeTocItemId = null, onSelectItem = () => {}}) => {
+  const tocData = useContext(TableOfContentContext);
+  const {entities} = tocData ?? {};
+  const {pages} = entities ?? {};
+  const {anchors} = entities ?? {};
+
   const [tocListHeight, setTocListHeight] = useState(null);
   const tocListElement = createRef();
   const classNames = {
@@ -51,15 +57,11 @@ export const TableOfContentList = ({isVisible = true, ids = [], allPages = {}, a
         className={styles.tocList}
       >
         {ids.map((id) => {
-          // console.log(allAnchors[id]);
           return (<TableOfContentItem
               key={id}
-              page={allPages[id]}
-              anchor={allAnchors[id]}
-              allPages={allPages}
-              allAnchors={allAnchors}
+              tocItemData={pages[id] ?? anchors[id]}
               activeTocItemId={activeTocItemId}
-              selectItem={selectItem}
+              onSelectItem={onSelectItem}
             />)
           }
         )}
