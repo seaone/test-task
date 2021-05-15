@@ -1,17 +1,23 @@
-import {createRef, useState, useContext} from "react";
+import {createRef, useContext, useState} from "react";
 import {CSSTransition} from "react-transition-group";
 import {TableOfContentContext} from "./TableOfContentContext"
-import {TableOfContentItem} from "./TableOfContentItem";
-import styles from "./styles.module.css";
+import {TableOfContentEntity} from "./TableOfContentEntity";
+import styles from "./styles/styles.module.css";
 
-export const TableOfContentList = ({isVisible = true, ids = [], activeTocItemId = null, onSelectItem = () => {}}) => {
-  const tocData = useContext(TableOfContentContext);
-  const {entities} = tocData ?? {};
-  const {pages} = entities ?? {};
-  const {anchors} = entities ?? {};
-
+export const TableOfContentList = ({
+                                     isVisible = false,
+                                     ids = [],
+                                     filteredIds = [],
+                                     activeTocEntityId = null,
+                                     onSelectItem = () => {
+                                     }
+                                   }) => {
   const [tocListHeight, setTocListHeight] = useState(null);
   const tocListElement = createRef();
+  const tocData = useContext(TableOfContentContext);
+  const {entities} = tocData;
+  const {pages = {}, anchors = {}} = entities;
+
   const classNames = {
     enterActive: styles.tocListEnterActive,
     enterDone: styles.tocListEnterDone,
@@ -20,7 +26,7 @@ export const TableOfContentList = ({isVisible = true, ids = [], activeTocItemId 
   }
 
   const tocListStyles = {
-    height: tocListHeight != null ? `${tocListHeight}px` : 'auto'
+    height: tocListHeight != null ? `${tocListHeight}px` : 'auto',
   }
 
   const onEnter = () => {
@@ -56,14 +62,14 @@ export const TableOfContentList = ({isVisible = true, ids = [], activeTocItemId 
         ref={tocListElement}
         className={styles.tocList}
       >
-        {ids.map((id) => {
-          return (<TableOfContentItem
-              key={id}
-              tocItemData={pages[id] ?? anchors[id]}
-              activeTocItemId={activeTocItemId}
-              onSelectItem={onSelectItem}
-            />)
-          }
+        {ids.map((id) =>
+          <TableOfContentEntity
+            key={id}
+            filteredIds={filteredIds}
+            tocEntityData={pages[id] ?? anchors[id]}
+            activeTocEntityId={activeTocEntityId}
+            onSelectItem={onSelectItem}
+          />
         )}
       </ul>
     </CSSTransition>

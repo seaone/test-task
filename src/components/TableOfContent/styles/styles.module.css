@@ -1,0 +1,181 @@
+.toc {
+  display: flex;
+  flex-direction: column;
+  width: 280px;
+  height: 100%;
+  font-size: 12px;
+  line-height: 16px;
+  color: #27282c;
+}
+
+.tocSearch {
+  width: 100%;
+  padding: 24px 32px 16px;
+}
+
+.tocSearchInput {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid rgba(39,40,44,.2);
+  border-radius: 0;
+  line-height: inherit;
+  transition-property: border-color;
+  transition-duration: .15s;
+}
+
+.tocSearchInput:focus-visible {
+  outline: none;
+  border-color: rgba(39,40,44,.7);
+}
+
+.tocList {
+  padding-left: 0;
+  margin: 0;
+  list-style: none;
+  overflow-y: auto;
+}
+
+.tocListEnterActive {
+  overflow: hidden;
+  animation: animateTocListFadeIn .3s forwards;
+}
+
+@keyframes animateTocListFadeIn {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+}
+
+.tocListEnterDone {
+  opacity: 1;
+}
+
+.tocListExitActive {
+  overflow: hidden;
+  animation: animateTocListFadeOut .3s forwards;
+}
+
+@keyframes animateTocListFadeOut {
+  to {
+    height: 0;
+    opacity: 0;
+  }
+}
+
+.tocListExitDone {
+  opacity: 0;
+  height: 0;
+}
+
+.tocEntity {}
+
+.tocEntityPage {}
+
+.tocEntityAnchor {}
+
+.tocLink {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 8px 32px;
+  text-decoration: none;
+  color: inherit;
+  transition-property: font-weight, background-color;
+  transition-duration: .15s;
+}
+
+.tocLink:focus-visible {
+  outline: none;
+}
+
+.tocLink::after {
+  transition-property: background-color;
+  transition-duration: .15s;
+}
+
+.tocLink:focus-within::after,
+.tocLink:focus-visible::after,
+.tocLink:hover::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(40,40,40,0.05);
+}
+
+.tocLinkSelected {
+  font-weight: 700;
+}
+
+.tocLinkFiltered {
+  color: #a9a9ab;
+}
+
+.tocEntityPage.tocEntityActive > .tocLink {
+  background-color: rgba(40,40,40,0.05);
+}
+
+.tocEntityActive > .tocList > .tocEntityAnchor > .tocLink {
+  background-color: rgba(40,40,40,0.05);
+}
+
+.tocEntityExpandButton {
+  display: flex;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  margin-left: -16px;
+  border: 0;
+  color: inherit;
+  background-color: transparent;
+  transition: transform .15s;
+}
+
+.tocEntityExpandButton:focus-visible {
+  color: #4ca6ff;
+}
+
+.tocEntityExpandButton:focus {
+  outline: none;
+}
+
+.tocEntityExpandButtonActive {
+  transform: rotate(90deg);
+}
+
+.tocEntityExpandButtonSVG {
+  width: 100%;
+  height: 100%;
+}
+
+.tocSkeletonPreloader {
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+.tocSkeletonPreloaderSVG {
+  fill: #f4f4f4;
+  animation: animateSkeletonFill 1s linear infinite;
+}
+
+@keyframes animateSkeletonFill {
+  0% { fill: #f4f4f4; }
+  50% { fill: #d4d4d4; }
+  100% { fill: #f4f4f4; }
+}
+
+.tocEmptyState {
+  width: 100%;
+  height: 100%;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+.tocEmptyStateTitle {
+  font-size: 12px;
+}

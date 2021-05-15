@@ -1,30 +1,63 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {getEntityIds} from "./utils";
 import {TableOfContentContext} from "./TableOfContentContext"
-import {TableOfContentSkeletonPreloader} from "./TableOfContentSkeletonPreloader";
+import {TableOfContentEmptyState} from "./TableOfContentEmptyState";
 import {TableOfContentList} from "./TableOfContentList";
-import styles from "./styles.module.css";
+import {TableOfContentSearch} from "./TableOfContentSearch";
+import {TableOfContentSkeletonPreloader} from "./TableOfContentSkeletonPreloader";
+import styles from "./styles/styles.module.css";
 
-export const TableOfContent = ({tocData = null}) => {
-  const {topLevelIds} = tocData ?? {};
-  const [activeTocItemId, setActiveTocItemId] = useState(null);
+export const TableOfContent = ({tocData = null, activeItemId}) => {
+  const [activeTocEntityId, setActiveTocEntityId] = useState(activeItemId);
+  const [filteredIds, setFilteredIds] = useState([]);
+  const [loadingSearchResult, setLoadingSearchResult] = useState(true);
+  const {topLevelIds = []} = tocData ?? {};
+  const entityIds = getEntityIds(topLevelIds, filteredIds);
+  const isPreloaderVisible = tocData == null || loadingSearchResult;
+  const isEmptyStateVisible = !isPreloaderVisible && entityIds.length === 0;
+  const isTableOfContentVisible = !isPreloaderVisible && !isEmptyStateVisible;
+
+  useEffect(() => {
+    setActiveTocEntityId(() => activeItemId);
+  }, [activeItemId]);
+
+  const onEntitySearch = (searchData) => {
+    const {searchResult, isSearchComplete} = searchData;
+
+    setLoadingSearchResult(!isSearchComplete);
+    setFilteredIds(searchResult);
+  }
 
   const onSelectItem = (id) => {
-    setActiveTocItemId(() => id);
+    setActiveTocEntityId(() => id);
   }
 
   return (
-    <nav className={styles.toc}>
-      {tocData != null ?
-        <TableOfContentContext.Provider value={tocData}>
+    <TableOfContentContext.Provider value={tocData}>
+      <nav className={styles.toc}>
+        <TableOfContentSearch
+          onSearch={onEntitySearch}
+        />
+
+        {isPreloaderVisible &&
+          <TableOfContentSkeletonPreloader/>
+        }
+
+        {isEmptyStateVisible &&
+          <TableOfContentEmptyState />
+        }
+
+        {isTableOfContentVisible &&
           <TableOfContentList
-            ids={topLevelIds}
-            activeTocItemId={activeTocItemId}
+            isVisible={true}
+            ids={entityIds}
+            filteredIds={filteredIds}
+            activeTocEntityId={activeTocEntityId}
             onSelectItem={onSelectItem}
           />
-        </TableOfContentContext.Provider> :
-        <TableOfContentSkeletonPreloader/>
-      }
-    </nav>
+        }
+      </nav>
+    </TableOfContentContext.Provider>
   );
 }
 
