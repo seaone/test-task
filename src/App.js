@@ -22,7 +22,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <header className="App-header">Header</header>
+        <header className="App-header"></header>
 
         <div className="App-container">
           <aside className="App-aside">
@@ -34,10 +34,7 @@ function App() {
 
           <Switch>
             <Route path="*">
-              <main className="App-main">
-
-                <footer className="App-footer">Footer</footer>
-              </main>
+              <div className="App-main"></div>
             </Route>
           </Switch>
         </div>

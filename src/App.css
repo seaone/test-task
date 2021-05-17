@@ -17,11 +17,4 @@
   border-right: 1px solid rgba(39,40,44,0.2);
 }
 
-.App-main {
-  display: flex;
-  height: 100%;
-}
-
-.App-footer {
-  margin-top: auto;
-}
+.App-main {}

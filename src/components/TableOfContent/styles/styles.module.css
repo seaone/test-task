@@ -25,6 +25,7 @@
 
 .tocSearchInput:focus {
   outline: none;
+  border-color: rgba(39,40,44,.7);
 }
 
 .tocSearchInput:focus-visible {
@@ -111,8 +112,12 @@
   transition-duration: .15s;
 }
 
-.tocLink:focus-visible::after,
+.tocLink:focus::after,
 .tocLink:hover::after {
+  background-color: rgba(40,40,40,0.05);
+}
+
+.tocLink:focus-visible::after {
   background-color: rgba(40,40,40,0.05);
 }
 
@@ -130,6 +135,12 @@
 
 .tocEntityActive > .tocList > .tocEntityAnchor > .tocLink {
   background-color: rgba(40,40,40,0.05);
+}
+
+.tocEntityTitle {
+  color: inherit;
+  position: relative;
+  z-index: 1;
 }
 
 .tocEntityExpandButton {
