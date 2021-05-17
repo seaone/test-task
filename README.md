@@ -1,5 +1,5 @@
 # Demo
-[https://seaone.github.io/test-task.html](https://seaone.github.io/test-task.html).
+[https://seaone.github.io/](https://seaone.github.io/).
 
 # Getting Started with Create React App
 
