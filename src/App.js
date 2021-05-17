@@ -51,9 +51,9 @@ const getTocEntityIdFromURL = (data) => {
   let url = pathname.match(re) != null ? pathname.match(re)[0] : null;
 
   if (url !== null && Object.values(data['entities']['pages']).length > 0) {
-    const page = Object.values(data['entities']['pages']).filter((page) => page['url'] === url)[0];
+    const page = Object.values(data['entities']['pages']).filter((page) => page['url'] === url)[0] ?? {};
 
-    if (hash !== '' && page['anchors'].length > 0) {
+    if (hash !== '' && page['anchors']?.length > 0) {
       const anchorIds = page['anchors'].filter((anchor) => {
         const re = new RegExp(`${hash}$`);
         return re.test(anchor)
