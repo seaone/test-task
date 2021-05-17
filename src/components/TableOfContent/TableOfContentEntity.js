@@ -19,7 +19,7 @@ export const TableOfContentEntity = ({tocEntityData = null, activeTocEntityId = 
   const hasChildPages = pages.length > 0;
   const hasAnchors = anchors.length > 0;
   const hasChildren = hasChildPages || hasAnchors;
-  const activeTocEntityAncestorIds = getAncestorIds(activeTocEntityId, entities).slice(0, -1);
+  const activeTocEntityAncestorIds = getAncestorIds(activeTocEntityId, entities);
 
   useEffect(() => {
     const isFiltered = filteredIds.length > 0 && !filteredIds.includes(id);
