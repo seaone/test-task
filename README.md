@@ -1,5 +1,5 @@
 # Demo
-[https://seaone.github.io/configuring-project-and-ide-settings.html](https://seaone.github.io/configuring-project-and-ide-settings.html).
+[https://seaone.github.io/test-task.html](https://seaone.github.io/test-task.html).
 
 # Getting Started with Create React App
 
