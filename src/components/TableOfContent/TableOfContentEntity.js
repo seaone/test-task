@@ -35,21 +35,13 @@ export const TableOfContentEntity = ({tocEntityData = null, activeTocEntityId = 
       });
     }
     // eslint-disable-next-line
-  }, []);
+  }, [activeTocEntityId]);
 
   const hasActiveAnchors = () => {
     const parentId = entities['anchors'][activeTocEntityId]?.parentId;
 
     return parentId === id;
   }
-
-  const hasActivePages = () => {
-    const parentId = entities['pages'][activeTocEntityId]?.parentId;
-
-    return parentId === id;
-  }
-
-  const hasActiveChildren = hasActiveAnchors() || hasActivePages();
 
   const getPaddingLeft = () => {
     const basePaddingLeft = 32;
@@ -89,7 +81,8 @@ export const TableOfContentEntity = ({tocEntityData = null, activeTocEntityId = 
       setIsExpanded(isExpanded => !isExpanded);
     } else {
       onSelectItem(id);
-      if (hasChildren && !hasActiveChildren) {
+
+      if (hasChildren && !(isExpanded && !(activeTocEntityId === id))) {
         setIsExpanded(isExpanded => !isExpanded);
       }
     }
