@@ -6,22 +6,22 @@ import styles from "./styles/styles.module.css";
 export const TableOfContentSearch = ({onSearch = () => {}}) => {
   const [query, setQuery] = useState('');
   const tocData = useContext(TableOfContentContext);
-  const [queryString, isDone] = useDebounceSearch(query, 500);
+  const [queryString, isCompleted] = useDebounceSearch(query, 500);
 
   useEffect(() => {
     const searchData = () => {
       onSearch({
         'searchResult': filterEntityIdsByQuery(queryString, tocData),
-        'isSearchComplete': isDone,
+        'isSearchComplete': isCompleted,
       })
     }
 
     searchData();
     // eslint-disable-next-line
-  }, [queryString, isDone]);
+  }, [queryString, isCompleted]);
 
   const onChange = (event) => {
-    setQuery(() => event.target.value);
+    setQuery(event.target.value);
   }
 
   return (

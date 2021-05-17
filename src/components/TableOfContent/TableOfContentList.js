@@ -4,19 +4,16 @@ import {TableOfContentContext} from "./TableOfContentContext"
 import {TableOfContentEntity} from "./TableOfContentEntity";
 import styles from "./styles/styles.module.css";
 
-export const TableOfContentList = ({
-                                     isVisible = false,
-                                     ids = [],
-                                     filteredIds = [],
-                                     activeTocEntityId = null,
-                                     onSelectItem = () => {
-                                     }
-                                   }) => {
+export const TableOfContentList = ({isVisible = true, ids = [], filteredIds = [], activeTocEntityId = null, onSelectItem = () => {}}) => {
   const [tocListHeight, setTocListHeight] = useState(null);
   const tocListElement = createRef();
   const tocData = useContext(TableOfContentContext);
   const {entities} = tocData;
   const {pages = {}, anchors = {}} = entities;
+
+  const tocListStyles = {
+    height: tocListHeight != null ? `${tocListHeight}px` : 'auto',
+  }
 
   const classNames = {
     enterActive: styles.tocListEnterActive,
@@ -25,24 +22,20 @@ export const TableOfContentList = ({
     exitDone: styles.tocListExitDone,
   }
 
-  const tocListStyles = {
-    height: tocListHeight != null ? `${tocListHeight}px` : 'auto',
-  }
-
   const onEnter = () => {
-    setTocListHeight(() => tocListElement.current.offsetHeight);
+    setTocListHeight(tocListElement.current.offsetHeight);
   }
 
   const onEntered = () => {
-    setTocListHeight(() => null);
+    setTocListHeight(null);
   }
 
   const onExit = () => {
-    setTocListHeight(() => tocListElement.current.offsetHeight);
+    setTocListHeight(tocListElement.current.offsetHeight);
   }
 
   const onExited = () => {
-    setTocListHeight(() => null);
+    setTocListHeight(null);
   }
 
   return (
@@ -65,9 +58,9 @@ export const TableOfContentList = ({
         {ids.map((id) =>
           <TableOfContentEntity
             key={id}
-            filteredIds={filteredIds}
             tocEntityData={pages[id] ?? anchors[id]}
             activeTocEntityId={activeTocEntityId}
+            filteredIds={filteredIds}
             onSelectItem={onSelectItem}
           />
         )}

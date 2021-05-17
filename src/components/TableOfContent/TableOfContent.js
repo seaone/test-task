@@ -7,7 +7,7 @@ import {TableOfContentSearch} from "./TableOfContentSearch";
 import {TableOfContentSkeletonPreloader} from "./TableOfContentSkeletonPreloader";
 import styles from "./styles/styles.module.css";
 
-export const TableOfContent = ({tocData = null, activeItemId}) => {
+export const TableOfContent = ({tocData = null, activeItemId = null}) => {
   const [activeTocEntityId, setActiveTocEntityId] = useState(activeItemId);
   const [filteredIds, setFilteredIds] = useState([]);
   const [loadingSearchResult, setLoadingSearchResult] = useState(true);
@@ -18,7 +18,7 @@ export const TableOfContent = ({tocData = null, activeItemId}) => {
   const isTableOfContentVisible = !isPreloaderVisible && !isEmptyStateVisible;
 
   useEffect(() => {
-    setActiveTocEntityId(() => activeItemId);
+    setActiveTocEntityId(activeItemId);
   }, [activeItemId]);
 
   const onEntitySearch = (searchData) => {

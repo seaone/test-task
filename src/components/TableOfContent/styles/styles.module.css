@@ -23,8 +23,12 @@
   transition-duration: .15s;
 }
 
-.tocSearchInput:focus-visible {
+.tocSearchInput:focus {
   outline: none;
+}
+
+.tocSearchInput:focus-visible {
+  outline: auto;
   border-color: rgba(39,40,44,.7);
 }
 
@@ -75,7 +79,7 @@
 .tocEntityAnchor {}
 
 .tocLink {
-  position: relative;
+  position: relative; /* for absolute positioning of .tocLink::after */
   display: flex;
   align-items: center;
   padding: 8px 32px;
@@ -85,18 +89,16 @@
   transition-duration: .15s;
 }
 
-.tocLink:focus-visible {
+.tocLink:focus {
   outline: none;
 }
 
-.tocLink::after {
-  transition-property: background-color;
-  transition-duration: .15s;
+.tocLink:focus-visible {
+  outline-offset: -1px;
+  outline: auto;
 }
 
-.tocLink:focus-within::after,
-.tocLink:focus-visible::after,
-.tocLink:hover::after {
+.tocLink::after {
   content: '';
   position: absolute;
   top: 0;
@@ -104,6 +106,13 @@
   display: block;
   width: 100%;
   height: 100%;
+  background-color: transparent;
+  transition-property: background-color;
+  transition-duration: .15s;
+}
+
+.tocLink:focus-visible::after,
+.tocLink:hover::after {
   background-color: rgba(40,40,40,0.05);
 }
 
@@ -126,6 +135,8 @@
 .tocEntityExpandButton {
   display: flex;
   flex-shrink: 0;
+  position: relative;
+  z-index: 1; /* to overlap .tocLink::after */
   width: 16px;
   height: 16px;
   padding: 0;
@@ -136,12 +147,12 @@
   transition: transform .15s;
 }
 
-.tocEntityExpandButton:focus-visible {
-  color: #4ca6ff;
-}
-
 .tocEntityExpandButton:focus {
   outline: none;
+}
+
+.tocEntityExpandButton:focus-visible {
+  outline: auto;
 }
 
 .tocEntityExpandButtonActive {

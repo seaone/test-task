@@ -1,13 +1,13 @@
-import {useState, useEffect, useContext} from "react";
+import {useContext, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import classNames from "classnames";
+import {getAncestorIds} from "./utils/";
 import {TableOfContentContext} from "./TableOfContentContext";
 import {TableOfContentList} from "./TableOfContentList";
-import {getAncestorIds, getEntityById} from "./utils/";
-import { ReactComponent as IconArrow } from "./svg/icon_arrow.svg"
+import {ReactComponent as IconArrow} from "./svg/icon_arrow.svg"
 import styles from "./styles/styles.module.css";
 
-export const TableOfContentEntity = ({tocEntityData, activeTocEntityId = null, filteredIds = [], onSelectItem = () => {}}) => {
+export const TableOfContentEntity = ({tocEntityData = null, activeTocEntityId = null, filteredIds = [], onSelectItem = () => {}}) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isFiltered, setIsFiltered] = useState(false);
   const tocData = useContext(TableOfContentContext);
@@ -19,30 +19,37 @@ export const TableOfContentEntity = ({tocEntityData, activeTocEntityId = null, f
   const hasChildPages = pages.length > 0;
   const hasAnchors = anchors.length > 0;
   const hasChildren = hasChildPages || hasAnchors;
-  const activeTocEntityParentId = getActiveTocEntityParentId(activeTocEntityId, entities);
-  const activeTocEntityAncestorIds = getAncestorIds(activeTocEntityParentId, entities);
+  const activeTocEntityAncestorIds = getAncestorIds(activeTocEntityId, entities);
 
   useEffect(() => {
-    if (filteredIds.length > 0 && !filteredIds.includes(id)) {
-      setIsFiltered(true);
-    } else {
-      setIsFiltered(false);
-    }
+    const isFiltered = filteredIds.length > 0 && !filteredIds.includes(id);
+    setIsFiltered(isFiltered);
   }, [filteredIds, id]);
 
   useEffect(() => {
-    activeTocEntityAncestorIds.forEach((itemId) => {
-      if (itemId === id && hasChildren) {
-        setIsExpanded(true);
-      }
-    });
-  }, [activeTocEntityAncestorIds, hasChildren, id]);
+    if (activeTocEntityAncestorIds.length > 0) {
+      activeTocEntityAncestorIds.forEach((itemId) => {
+        if (itemId === id && hasChildren) {
+          setIsExpanded(true);
+        }
+      });
+    }
+    // eslint-disable-next-line
+  }, []);
 
   const hasActiveAnchors = () => {
     const parentId = entities['anchors'][activeTocEntityId]?.parentId;
 
     return parentId === id;
   }
+
+  const hasActivePages = () => {
+    const parentId = entities['pages'][activeTocEntityId]?.parentId;
+
+    return parentId === id;
+  }
+
+  const hasActiveChildren = hasActiveAnchors() || hasActivePages();
 
   const getPaddingLeft = () => {
     const basePaddingLeft = 32;
@@ -76,15 +83,15 @@ export const TableOfContentEntity = ({tocEntityData, activeTocEntityId = null, f
     [styles.tocLinkFiltered]: isFiltered,
   });
 
-  const selectTocItem = (event) => {
+  const onSelectTocItem = (event) => {
     if (event.target.closest('button')) {
       event.preventDefault();
+      setIsExpanded(isExpanded => !isExpanded);
     } else {
       onSelectItem(id);
-    }
-
-    if (hasChildren) {
-      setIsExpanded(isExpanded => !isExpanded);
+      if (hasChildren && !hasActiveChildren) {
+        setIsExpanded(isExpanded => !isExpanded);
+      }
     }
   }
 
@@ -94,7 +101,7 @@ export const TableOfContentEntity = ({tocEntityData, activeTocEntityId = null, f
         style={tocLinkStyles}
         to={entityUrl}
         className={tocLinkClass}
-        onClick={selectTocItem}
+        onClick={onSelectTocItem}
       >
         {hasChildPages &&
           <button
@@ -113,7 +120,7 @@ export const TableOfContentEntity = ({tocEntityData, activeTocEntityId = null, f
       </Link>
 
       <TableOfContentList
-        isVisible={hasChildren && isExpanded}
+        isVisible={isExpanded}
         ids={childIds}
         activeTocEntityId={activeTocEntityId}
         filteredIds={filteredIds}
@@ -121,8 +128,4 @@ export const TableOfContentEntity = ({tocEntityData, activeTocEntityId = null, f
       />
     </li>
   );
-}
-
-const getActiveTocEntityParentId = (activeTocEntityId, entities) => {
-  return activeTocEntityId != null ? getEntityById(activeTocEntityId, entities)['parentId'] : null;
 }
