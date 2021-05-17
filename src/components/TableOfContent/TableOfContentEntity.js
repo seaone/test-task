@@ -35,7 +35,7 @@ export const TableOfContentEntity = ({tocEntityData = null, activeTocEntityId = 
       });
     }
     // eslint-disable-next-line
-  }, []);
+  }, [activeTocEntityAncestorIds]);
 
   const hasActiveAnchors = () => {
     const parentId = entities['anchors'][activeTocEntityId]?.parentId;
