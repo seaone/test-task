@@ -75,14 +75,14 @@ export const TableOfContentEntity = ({tocEntityData = null, activeTocEntityId = 
     [styles.tocLinkFiltered]: isFiltered,
   });
 
-  const onSelectTocItem = (event) => {
+  const onClickTocLink = (event) => {
     if (event.target.closest('button')) {
       event.preventDefault();
       setIsExpanded(isExpanded => !isExpanded);
     } else {
       onSelectItem(id);
 
-      if (hasChildren && !(isExpanded && !(activeTocEntityId === id))) {
+      if (hasChildren && activeTocEntityId === id) {
         setIsExpanded(isExpanded => !isExpanded);
       }
     }
@@ -94,7 +94,7 @@ export const TableOfContentEntity = ({tocEntityData = null, activeTocEntityId = 
         style={tocLinkStyles}
         to={entityUrl}
         className={tocLinkClass}
-        onClick={onSelectTocItem}
+        onClick={onClickTocLink}
       >
         {hasChildPages &&
           <button
